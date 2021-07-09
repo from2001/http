@@ -1,0 +1,19 @@
+{
+  "name": "com.adrenak.http",
+  "displayName": "Adrenak Http",
+  "version": "0.0.0",
+  "description": "An improved API for making http requests in unity.",
+  "unity": "2018.4",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adrenak/http"
+  },
+  "author": {
+    "name": "Vatsal Ambastha",
+    "email": "ambastha.vatsal@gmail.com",
+    "url": "http://www.vatsalambastha.com"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
+}
