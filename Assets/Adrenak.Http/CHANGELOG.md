@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/adrenak/http/compare/v1.0.0...v1.0.1) (2021-07-09)
+
+
+### Bug Fixes
+
+* Fix PKG_ROOT in ci.yml for release via Github Actions. ([5c4d282](https://github.com/adrenak/http/commit/5c4d282d7c0dae40d21d7f8f7211294aa1ae1756))
+
 # 1.0.0 (2021-07-09)
 
 
