@@ -1,6 +1,6 @@
 {
   "name": "com.adrenak.http",
-  "displayName": "Adrenak.Http",
+  "displayName": "Adrenak Http",
   "version": "1.0.2",
   "description": "An improved API for making http requests in unity.",
   "unity": "2018.4",
