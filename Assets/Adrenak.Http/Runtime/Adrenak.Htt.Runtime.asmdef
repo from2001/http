@@ -1,6 +1,8 @@
 {
     "name": "Adrenak.Http.Runtime",
-    "references": [],
+    "references": [
+        "UniTask"
+    ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],

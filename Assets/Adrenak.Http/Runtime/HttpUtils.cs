@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using Cysharp.Threading.Tasks;
+using Adrenak.Http.Service;
 
 namespace Adrenak.Http {
     /// <summary>
@@ -30,6 +34,22 @@ namespace Adrenak.Http {
             }
 
             return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Sends the request using UniTask. NOTE: request.OnSuccess, OnError, OnNetworkError events get overriden by this.
+        /// If using this method, use try/await/catch to handle success and errors.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="HttpResponse"/> object in a UniTask
+        /// </returns>
+        public static UniTask<HttpResponse> SendAsync(this IHttpRequest request) {
+            var source = new UniTaskCompletionSource<HttpResponse>();
+            request.OnSuccess(x => source.TrySetResult(x))
+            .OnError(x => source.TrySetException(new Exception(x.Error)))
+            .OnNetworkError(x => source.TrySetException(new Exception(x.Error)))
+            .Send();
+            return source.Task;
         }
     }
 }

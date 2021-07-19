@@ -1,6 +1,6 @@
 {
   "name": "com.adrenak.http",
-  "displayName": "Adrenak Http",
+  "displayName": "Adrenak.Http",
   "version": "1.0.2",
   "description": "An improved API for making http requests in unity.",
   "unity": "2018.4",
@@ -13,6 +13,19 @@
     "email": "ambastha.vatsal@gmail.com",
     "url": "http://www.vatsalambastha.com"
   },
+  "dependencies": {
+    "com.cysharp.unitask": "2.2.5"
+  },
+  "scopedRegistries": [
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.cysharp.unitask",
+        "com.openupm"
+      ]
+    }
+  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   }
