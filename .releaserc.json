@@ -8,7 +8,7 @@
       "changelogFile":"Assets/Adrenak.Http/CHANGELOG.md"
     }],
     ["@semantic-release/npm", { 
-      "npmPublish": true,
+      "npmPublish": false,
       "pkgRoot":"Assets/Adrenak.Http/"
     }],
     ["@semantic-release/git", {
