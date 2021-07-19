@@ -19,7 +19,6 @@ jobs:
       with:
         extra_plugins: |
           @semantic-release/changelog
-          @semantic-release/git
           @semantic-release/npm
         branch: master
       env:
