@@ -15,12 +15,12 @@ jobs:
 
     - name: Semantic Release
       id: semantic
-      uses: cycjimmy/semantic-release-action@v2.5.4
+      uses: cycjimmy/semantic-release-action@v2.1.3
       with:
         extra_plugins: |
-          @semantic-release/changelog@5.0.0
-          @semantic-release/git@9.0.0
-          @semantic-release/npm@17.4.4
+          @semantic-release/changelog
+          @semantic-release/git
+          @semantic-release/npm
         branch: master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
