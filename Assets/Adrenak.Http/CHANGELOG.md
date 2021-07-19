@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/adrenak/http/compare/v1.0.2...v1.1.0) (2021-07-19)
+
+
+### Features
+
+* Add UniTask based SendAsync extension method to IHttpRequest ([224f777](https://github.com/adrenak/http/commit/224f7776c94031b5b13a10cc9775a572bb534a33))
+* Add UniTask based SendAsync extension method to IHttpRequest ([3a53e0f](https://github.com/adrenak/http/commit/3a53e0fa88972d14f17a4507303a85f588569166))
+* Update cycjimmy/semantic-release-action ([3bddaac](https://github.com/adrenak/http/commit/3bddaac648f4b96cc697af264ac41efa72505f44))
+
 ## [1.0.2](https://github.com/adrenak/http/compare/v1.0.1...v1.0.2) (2021-07-09)
 
 
