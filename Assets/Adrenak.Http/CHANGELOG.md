@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/adrenak/http/compare/v1.1.0...v1.2.0) (2021-07-23)
+
+
+### Features
+
+* Enable automatic NPM publishing ([a3518e5](https://github.com/adrenak/http/commit/a3518e575eb8bf57e904239b5ebb47a3cbf80400))
+
 # [1.1.0](https://github.com/adrenak/http/compare/v1.0.2...v1.1.0) (2021-07-19)
 
 
