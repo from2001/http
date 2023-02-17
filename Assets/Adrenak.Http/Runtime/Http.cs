@@ -170,7 +170,7 @@ namespace Adrenak.Http {
         }
 
         private void Update() {
-            if(httpRequest != null)
+            if(httpRequests != null)
                 foreach (var httpRequest in httpRequests.Keys) 
                     (httpRequest as IUpdateProgress)?.UpdateProgress();
         }
