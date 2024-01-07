@@ -17,7 +17,7 @@ namespace Adrenak.Http.Service.Unity {
         }
 
         public IHttpRequest Post(string uri, string postData) {
-            return new UnityHttpRequest(UnityWebRequest.Post(uri, postData));
+            return new UnityHttpRequest(UnityWebRequest.PostWwwForm(uri, postData));
         }
 
         public IHttpRequest Post(string uri, WWWForm formData) {
