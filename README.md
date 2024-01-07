@@ -13,6 +13,8 @@ The Http instance will run the WebRequest coroutines for you so you don't have t
 * Fluent API for configuration
 * Success, error and network error events
 * Super headers
+* Contents cache (To be implemented)
+* Visual Scripting Nodes (To be implemented)
 
 ## Requirements
 
