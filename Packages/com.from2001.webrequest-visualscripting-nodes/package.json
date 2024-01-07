@@ -1,9 +1,9 @@
 {
-  "name": "com.adrenak.http",
-  "displayName": "Adrenak Http",
-  "version": "1.2.2",
-  "description": "An improved API for making http requests in unity.",
-  "unity": "2018.4",
+  "name": "com.styly.webrequest-visualscripting-nodes",
+  "displayName": "WebRequest Visual Scripting",
+  "version": "0.0.1",
+  "description": "Unity Visual Scripting Node for WebRequest",
+  "unity": "2021.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/adrenak/http"
@@ -14,7 +14,7 @@
     "url": "http://www.vatsalambastha.com"
   },
   "dependencies": {
-    "com.cysharp.unitask": "2.2.5"
+    "com.cysharp.unitask": "2.4.1"
   },
   "scopedRegistries": [
     {
