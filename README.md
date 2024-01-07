@@ -1,8 +1,7 @@
 # http
 
-Note: This is a fork of [Dubit's unity-http](https://www.github.com/dubit/unity-http) and has little to no change from the original. 
+Note: This is a fork of [adrenak's http](https://github.com/adrenak/http) which is a fork of [Dubit's unity-http](https://www.github.com/dubit/unity-http)
   
-Further development may happen here as the original repo has not been very active recently (as of mid 2021)
 
 ## What is it?
 The Http system has a quick and easy API for making http requests within Unity.  
@@ -15,25 +14,17 @@ The Http instance will run the WebRequest coroutines for you so you dont have to
 * Super headers
 
 ## Requirements
-* Unity 2018.3+
+* Unity 2021.3
 * .NET 4.5
 * C# 7
 
 ## Installation
 
-Add it as a package using [Unity Package Manager](https://docs.unity3d.com/Manual/upm-git.html) or via submodule:  
-`git submodule add git@github.com:dubit/unity-http.git Assets/Duck/Http`
-
-## Releasing
-* Use [gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
-* Create a release branch for the release
-* On that branch, bump version number in package json file, any other business (docs/readme updates)
-* Merge to master via pull request and tag the merge commit on master.
-* Merge back to development.#
+To be updated
 
 ## How to use it.
 If you are using an AssemblyDefinition then reference the Http Assembly.  
-Import the namespace `using DUCK.Http;`
+Import the namespace `using STYLY.Http;`
 
 ```c#
 var request = Http.Get("http://mywebapi.com/")
