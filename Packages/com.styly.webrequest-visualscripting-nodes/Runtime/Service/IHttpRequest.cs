@@ -16,5 +16,7 @@ namespace STYLY.Http.Service {
         IHttpRequest Send();
         IHttpRequest SetRedirectLimit(int redirectLimit);
         void Abort();
+        IHttpRequest UseCache();
+        IHttpRequest UseCacheOnlyWhenOffline();
     }
 }

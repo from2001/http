@@ -108,5 +108,15 @@ namespace STYLY.Http.Service.Unity {
                 onProgress?.Invoke(currentProgress);
             }
         }
+
+        public IHttpRequest UseCache() {
+            Http.Instance.UseCache(this);
+            return this;
+        }
+
+        public IHttpRequest UseCacheOnlyWhenOffline() {
+            Http.Instance.UseCacheOnlyWhenOffline(this);
+            return this;
+        }
     }
 }

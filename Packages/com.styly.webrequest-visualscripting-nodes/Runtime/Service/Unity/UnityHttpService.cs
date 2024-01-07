@@ -103,6 +103,9 @@ namespace STYLY.Http.Service.Unity
             }
             else
             {
+                // Create ccache file
+                CacheUtils.CreateCacheFile(response.Url, response.Bytes);
+
                 onSuccess?.Invoke(response);
             }
         }
