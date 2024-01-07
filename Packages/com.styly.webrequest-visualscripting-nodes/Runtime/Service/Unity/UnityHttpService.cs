@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Adrenak.Http.Service.Unity {
+namespace STYLY.Http.Service.Unity {
     public class UnityHttpService : IHttpService {
         public IHttpRequest Get(string uri) {
             return new UnityHttpRequest(UnityWebRequest.Get(uri));

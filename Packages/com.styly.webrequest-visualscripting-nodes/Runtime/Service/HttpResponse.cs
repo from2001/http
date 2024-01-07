@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace Adrenak.Http.Service {
+namespace STYLY.Http.Service {
     public class HttpResponse {
         public string Url { get; set; }
         public bool IsSuccessful { get; set; }

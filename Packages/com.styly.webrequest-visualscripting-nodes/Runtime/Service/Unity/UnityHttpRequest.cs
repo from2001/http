@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine.Networking;
 
-namespace Adrenak.Http.Service.Unity {
+namespace STYLY.Http.Service.Unity {
     public class UnityHttpRequest : IHttpRequest, IUpdateProgress {
         internal UnityWebRequest UnityWebRequest => unityWebRequest;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Adrenak.Http.Service {
+namespace STYLY.Http.Service {
     public interface IHttpRequest {
         IHttpRequest RemoveSuperHeaders();
         IHttpRequest SetHeader(string key, string value);

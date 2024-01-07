@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 
 using Cysharp.Threading.Tasks;
-using Adrenak.Http.Service;
+using STYLY.Http.Service;
 
-namespace Adrenak.Http {
+namespace STYLY.Http {
     /// <summary>
     /// A utility class for http.
     /// <see cref="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status"/>
