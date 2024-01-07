@@ -6,12 +6,12 @@
   "unity": "2021.3",
   "repository": {
     "type": "git",
-    "url": "https://github.com/adrenak/http"
+    "url": "https://github.com/styly-dev"
   },
   "author": {
-    "name": "Vatsal Ambastha",
-    "email": "ambastha.vatsal@gmail.com",
-    "url": "http://www.vatsalambastha.com"
+    "name": "STYLY, Inc",
+    "email": "info@styly.inc",
+    "url": "https://styly.cc/"
   },
   "dependencies": {
     "com.cysharp.unitask": "2.4.1"
@@ -25,8 +25,5 @@
         "com.openupm"
       ]
     }
-  ],
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  }
+  ]
 }
