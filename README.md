@@ -9,10 +9,15 @@ The Http instance will run the WebRequest coroutines for you so you don't have t
 
 ## Features
 
+Original features
+
 * Singleton
 * Fluent API for configuration
 * Success, error and network error events
 * Super headers
+
+New features
+
 * Downloaded data cache
 * Visual Scripting Nodes (To be implemented)
 
@@ -24,7 +29,7 @@ The Http instance will run the WebRequest coroutines for you so you don't have t
 
 ## Installation
 
-To be updated
+(To be updated)
 
 ## How to use it
 
