@@ -149,7 +149,6 @@ This has the following properties:
 * `bool IsHttpError`  
 * `bool IsNetworkError`  
 * `long StatusCode`  
-* `ResponseType ResponseType`  
 * `byte[] Bytes`  
 * `string Text`  
 * `string Error`  
