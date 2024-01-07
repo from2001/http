@@ -13,7 +13,7 @@ The Http instance will run the WebRequest coroutines for you so you don't have t
 * Fluent API for configuration
 * Success, error and network error events
 * Super headers
-* Contents cache (To be implemented)
+* Downloaded data cache
 * Visual Scripting Nodes (To be implemented)
 
 ## Requirements
@@ -33,6 +33,28 @@ Import the namespace `using STYLY.Http;`
 
 ```c#
 var request = Http.Get("http://mywebapi.com/")
+ .SetHeader("Authorization", "username:password")
+ .OnSuccess(response => Debug.Log(response.Text))
+ .OnError(response => Debug.Log(response.StatusCode))
+ .OnDownloadProgress(progress => Debug.Log(progress))
+ .Send();
+```
+
+```c#
+var request = Http.Get("http://mywebapi.com/")
+ .UseCache() // <= Downloaded data will be cached
+ .SetHeader("Authorization", "username:password")
+ .OnSuccess(response => Debug.Log(response.Text))
+ .OnError(response => Debug.Log(response.StatusCode))
+ .OnDownloadProgress(progress => Debug.Log(progress))
+ .Send();
+```
+
+```c#
+//  You may want to use .UseCacheOnlyWhenOffline() for data feed like RSS or RestAPI
+
+var request = Http.Get("http://mywebapi.com/xxxx.json")
+ .UseCacheOnlyWhenOffline() // <= Load data from cache only when offline
  .SetHeader("Authorization", "username:password")
  .OnSuccess(response => Debug.Log(response.Text))
  .OnError(response => Debug.Log(response.StatusCode))
