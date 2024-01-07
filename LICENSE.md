@@ -1,8 +1,8 @@
 MIT License
 
 Copyright (c) 2024 STYLY, Inc  
-Copyright (c) 2021 Vatsal Ambastha
-Copyright (c) 2017-2018 Dubit Ltd.
+Copyright (c) 2021 Vatsal Ambastha  
+Copyright (c) 2017-2018 Dubit Ltd.  
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
