@@ -8,7 +8,7 @@
       "url": "https://package.openupm.com"
     },
     "com.styly.webrequest-visualscripting-nodes": {
-      "version": "file:com.from2001.webrequest-visualscripting-nodes",
+      "version": "file:com.styly.webrequest-visualscripting-nodes",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
