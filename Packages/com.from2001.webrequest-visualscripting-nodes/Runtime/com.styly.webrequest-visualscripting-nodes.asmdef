@@ -1,14 +1,16 @@
 {
-    "name": "Adrenak.Http.Runtime",
+    "name": "com.styly.webrequest-visualscripting-nodes",
+    "rootNamespace": "",
     "references": [
         "UniTask"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
