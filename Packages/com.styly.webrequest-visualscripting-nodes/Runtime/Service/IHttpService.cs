@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Adrenak.Http.Service {
+namespace STYLY.Http.Service {
     public interface IHttpService {
         /// <summary>
         /// Creates a HttpRequest configured for HTTP GET.

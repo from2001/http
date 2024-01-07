@@ -2,13 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using Adrenak.Http.Service;
-using Adrenak.Http.Service.Unity;
+using STYLY.Http.Service;
+using STYLY.Http.Service.Unity;
 
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Adrenak.Http {
+namespace STYLY.Http {
     public sealed class Http : MonoBehaviour {
         public static Http Instance {
             get {
@@ -79,67 +79,67 @@ namespace Adrenak.Http {
 
         #region Static Requests
 
-        /// <see cref="Adrenak.Http.Service.IHttpService.Get"/>
+        /// <see cref="STYLY.Http.Service.IHttpService.Get"/>
         public static IHttpRequest Get(string uri) {
             return Instance.service.Get(uri);
         }
 
-        /// <see cref="Adrenak.Http.Service.IHttpService.GetTexture"/>
+        /// <see cref="STYLY.Http.Service.IHttpService.GetTexture"/>
         public static IHttpRequest GetTexture(string uri) {
             return Instance.service.GetTexture(uri);
         }
 
-        /// <see cref="Adrenak.Http.Service.IHttpService.Post(string, string)"/>
+        /// <see cref="STYLY.Http.Service.IHttpService.Post(string, string)"/>
         public static IHttpRequest Post(string uri, string postData) {
             return Instance.service.Post(uri, postData);
         }
 
-        /// <see cref="Adrenak.Http.Service.IHttpService.Post(string, WWWForm)"/>
+        /// <see cref="STYLY.Http.Service.IHttpService.Post(string, WWWForm)"/>
         public static IHttpRequest Post(string uri, WWWForm formData) {
             return Instance.service.Post(uri, formData);
         }
 
-        /// <see cref="Adrenak.Http.Service.IHttpService.Post(string, Dictionary&lt;string, string&gt;)"/>
+        /// <see cref="STYLY.Http.Service.IHttpService.Post(string, Dictionary&lt;string, string&gt;)"/>
         public static IHttpRequest Post(string uri, Dictionary<string, string> formData) {
             return Instance.service.Post(uri, formData);
         }
 
-        /// <see cref="Adrenak.Http.Service.IHttpService.Post(string, List&lt;IMultipartFormSection&gt;)"/>
+        /// <see cref="STYLY.Http.Service.IHttpService.Post(string, List&lt;IMultipartFormSection&gt;)"/>
         public static IHttpRequest Post(string uri, List<IMultipartFormSection> multipartForm) {
             return Instance.service.Post(uri, multipartForm);
         }
 
-        /// <see cref="Adrenak.Http.Service.IHttpService.Post(string, byte[], string)"/>
+        /// <see cref="STYLY.Http.Service.IHttpService.Post(string, byte[], string)"/>
         public static IHttpRequest Post(string uri, byte[] bytes, string contentType) {
             return Instance.service.Post(uri, bytes, contentType);
         }
 
-        /// <see cref="Adrenak.Http.Service.IHttpService.PostJson"/>
+        /// <see cref="STYLY.Http.Service.IHttpService.PostJson"/>
         public static IHttpRequest PostJson(string uri, string json) {
             return Instance.service.PostJson(uri, json);
         }
 
-        /// <see cref="Adrenak.Http.Service.IHttpService.PostJson{T}(string, T)"/>
+        /// <see cref="STYLY.Http.Service.IHttpService.PostJson{T}(string, T)"/>
         public static IHttpRequest PostJson<T>(string uri, T payload) where T : class {
             return Instance.service.PostJson(uri, payload);
         }
 
-        /// <see cref="Adrenak.Http.Service.IHttpService.Put(string, byte[])"/>
+        /// <see cref="STYLY.Http.Service.IHttpService.Put(string, byte[])"/>
         public static IHttpRequest Put(string uri, byte[] bodyData) {
             return Instance.service.Put(uri, bodyData);
         }
 
-        /// <see cref="Adrenak.Http.Service.IHttpService.Put(string, string)"/>
+        /// <see cref="STYLY.Http.Service.IHttpService.Put(string, string)"/>
         public static IHttpRequest Put(string uri, string bodyData) {
             return Instance.service.Put(uri, bodyData);
         }
 
-        /// <see cref="Adrenak.Http.Service.IHttpService.Delete"/>
+        /// <see cref="STYLY.Http.Service.IHttpService.Delete"/>
         public static IHttpRequest Delete(string uri) {
             return Instance.service.Delete(uri);
         }
 
-        /// <see cref="Adrenak.Http.Service.IHttpService.Head"/>
+        /// <see cref="STYLY.Http.Service.IHttpService.Head"/>
         public static IHttpRequest Head(string uri) {
             return Instance.service.Head(uri);
         }

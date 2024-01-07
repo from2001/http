@@ -1,4 +1,4 @@
-﻿namespace Adrenak.Http.Service.Unity {
+﻿namespace STYLY.Http.Service.Unity {
     public interface IUpdateProgress {
         void UpdateProgress();
     }
