@@ -202,7 +202,7 @@ namespace STYLY.Http
 
             // Delete cache downloading flag file
             var unityHttpRequest = request as UnityHttpRequest;
-            CacheUtils.DeleteCacheDownloadingFlagFile(unityHttpRequest.UnityWebRequest.uri.ToString());
+            CacheUtils.DeleteCacheDownloadingFlagFile(unityHttpRequest.UnityWebRequest.uri.ToString(), unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
         }
 
         private void Update()
@@ -212,22 +212,34 @@ namespace STYLY.Http
                     (httpRequest as IUpdateProgress)?.UpdateProgress();
         }
 
-        internal void UseCache(IHttpRequest request)
+        internal void UseCache(IHttpRequest request, CacheType cacheType)
         {
+            bool useCacheFlag;
+            bool useCacheOnlyWhenOfflineFlag;
+            switch (cacheType)
+            {
+                case CacheType.DoNotUseCache:
+                    useCacheFlag = false;
+                    useCacheOnlyWhenOfflineFlag = false;
+                    break;
+                case CacheType.UseCacheAlways:
+                    useCacheFlag = true;
+                    useCacheOnlyWhenOfflineFlag = false;
+                    break;
+                case CacheType.UseCacheOnlyWhenOffline:
+                    useCacheFlag = false;
+                    useCacheOnlyWhenOfflineFlag = true;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(cacheType), cacheType, null);
+            }
+
             var unityHttpRequest = request as UnityHttpRequest;
-            var uri = new Uri(CacheUtils.GetWebRequestUri(unityHttpRequest.UnityWebRequest.uri.ToString(), true, false));
+            string[] ignorePatternsForCacheFilePathGeneration = unityHttpRequest.ignorePatternsForCacheFilePathGeneration;
+
+            var uri = new Uri(CacheUtils.GetWebRequestUri(unityHttpRequest.UnityWebRequest.uri.ToString(), useCacheFlag, useCacheOnlyWhenOfflineFlag, ignorePatternsForCacheFilePathGeneration));
             unityHttpRequest.UnityWebRequest.uri = uri;
-            if(!uri.IsFile){CacheUtils.CreateCacheDownloadingFlagFile(uri.ToString());}
+            if (!uri.IsFile) { CacheUtils.CreateCacheDownloadingFlagFile(uri.ToString(), ignorePatternsForCacheFilePathGeneration); }
         }
-
-        internal void UseCacheOnlyWhenOffline(IHttpRequest request)
-        {
-            var unityHttpRequest = request as UnityHttpRequest;
-            var uri = new Uri(CacheUtils.GetWebRequestUri(unityHttpRequest.UnityWebRequest.uri.ToString(), false, true));
-            unityHttpRequest.UnityWebRequest.uri = uri;
-            if(!uri.IsFile){CacheUtils.CreateCacheDownloadingFlagFile(uri.ToString());}
-        }
-
-
     }
 }

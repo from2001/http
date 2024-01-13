@@ -10,10 +10,10 @@ namespace STYLY.Http
         private static readonly string cacheDir = Application.persistentDataPath + "/cache/";
         private static readonly string cacheDownloadingExtension = ".downloading";
 
-        public static string GetWebRequestUri(string uri, bool useCacheFlag, bool useCacheOnlyWhenOfflineFlag)
+        public static string GetWebRequestUri(string uri, bool useCacheFlag, bool useCacheOnlyWhenOfflineFlag, string[] ignorePatternsForCacheFilePathGeneration)
         {
-            bool shouldUseCache = useCacheFlag && CacheFileExists(uri);
-            bool shouldUseCacheWhenOffline = useCacheOnlyWhenOfflineFlag && CacheFileExists(uri) && !IsOnline();
+            bool shouldUseCache = useCacheFlag && CacheFileExists(uri, ignorePatternsForCacheFilePathGeneration);
+            bool shouldUseCacheWhenOffline = useCacheOnlyWhenOfflineFlag && CacheFileExists(uri, ignorePatternsForCacheFilePathGeneration) && !IsOnline();
 
             if (shouldUseCache || shouldUseCacheWhenOffline)
             {
@@ -24,51 +24,70 @@ namespace STYLY.Http
 
         private static string GenerateCacheFilePath(string uri)
         {
-            return cacheDir + GenerateChacheFileName(uri);
+            return cacheDir + GenerateCacheFileName(uri);
         }
 
         private static string GenerateCacheDownloadingFlagFilePath(string uri)
         {
-            return cacheDir + GenerateChacheFileName(uri) + cacheDownloadingExtension;
+            return cacheDir + GenerateCacheFileName(uri) + cacheDownloadingExtension;
         }
 
-        public static bool CacheFileExists(string uri)
+        public static string RemoveIgnorePatternsFromUri(string uri, string[] ignorePatternsForCacheFilePathGeneration)
         {
+            if(ignorePatternsForCacheFilePathGeneration != null){
+            foreach (string ignorePattern in ignorePatternsForCacheFilePathGeneration)
+            {
+                // Remove ignore pattern from uri with regex
+                uri = System.Text.RegularExpressions.Regex.Replace(uri, ignorePattern, "");
+            }
+            }
+            return uri;
+        }
+
+        public static bool CacheFileExists(string uri, string[] ignorePatternsForCacheFilePathGeneration)
+        {
+            uri = RemoveIgnorePatternsFromUri(uri, ignorePatternsForCacheFilePathGeneration);
             return System.IO.File.Exists(GenerateCacheFilePath(uri));
         }
 
-        public static bool IsNowDownloading(string uri)
+        public static bool IsNowDownloading(string uri, string[] ignorePatternsForCacheFilePathGeneration)
         {
+            uri = RemoveIgnorePatternsFromUri(uri, ignorePatternsForCacheFilePathGeneration);
             return System.IO.File.Exists(GenerateCacheDownloadingFlagFilePath(uri));
         }
 
-        public static void CreateCacheFile(string uri, byte[] data)
+        public static void CreateCacheFile(string uri, byte[] data, string[] ignorePatternsForCacheFilePathGeneration)
         {
-            if (IsNowDownloading(uri))
+            uri = RemoveIgnorePatternsFromUri(uri, ignorePatternsForCacheFilePathGeneration);
+            if (IsNowDownloading(uri, ignorePatternsForCacheFilePathGeneration))
             {
                 System.IO.File.WriteAllBytes(GenerateCacheFilePath(uri), data);
-                DeleteCacheDownloadingFlagFile(uri);
+                DeleteCacheDownloadingFlagFile(uri, ignorePatternsForCacheFilePathGeneration);
             }
         }
 
-        public static byte[] ReadCacheFile(string uri)
+        public static byte[] ReadCacheFile(string uri, string[] ignorePatternsForCacheFilePathGeneration)
         {
+            uri = RemoveIgnorePatternsFromUri(uri, ignorePatternsForCacheFilePathGeneration);
             return System.IO.File.ReadAllBytes(GenerateCacheFilePath(uri));
         }
 
-        public static void DeleteCacheFile(string uri)
+        public static void DeleteCacheFile(string uri, string[] ignorePatternsForCacheFilePathGeneration)
         {
+            uri = RemoveIgnorePatternsFromUri(uri, ignorePatternsForCacheFilePathGeneration);
             System.IO.File.Delete(GenerateCacheFilePath(uri));
         }
 
-        public static void CreateCacheDownloadingFlagFile(string uri)
+        public static void CreateCacheDownloadingFlagFile(string uri, string[] ignorePatternsForCacheFilePathGeneration)
         {
+            uri = RemoveIgnorePatternsFromUri(uri, ignorePatternsForCacheFilePathGeneration);
             if (!System.IO.Directory.Exists(cacheDir)) System.IO.Directory.CreateDirectory(cacheDir);
             System.IO.File.Create(GenerateCacheDownloadingFlagFilePath(uri)).Dispose();
         }
 
-        public static void DeleteCacheDownloadingFlagFile(string uri)
+        public static void DeleteCacheDownloadingFlagFile(string uri, string[] ignorePatternsForCacheFilePathGeneration)
         {
+            uri = RemoveIgnorePatternsFromUri(uri, ignorePatternsForCacheFilePathGeneration);
             System.IO.File.Delete(GenerateCacheDownloadingFlagFilePath(uri));
         }
 
@@ -82,7 +101,7 @@ namespace STYLY.Http
         /// </summary>
         /// <param name="uri"></param>
         /// <returns></returns>
-        private static string GenerateChacheFileName(string uri)
+        private static string GenerateCacheFileName(string uri)
         {
             // SSHA256 hash will be used as cache file name.
             using SHA256 sha256 = SHA256.Create();
