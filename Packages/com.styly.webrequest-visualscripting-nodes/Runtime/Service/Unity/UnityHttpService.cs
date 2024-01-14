@@ -20,6 +20,11 @@ namespace STYLY.Http.Service.Unity
             return new UnityHttpRequest(UnityWebRequestTexture.GetTexture(uri));
         }
 
+        public IHttpRequest GetAudioClip(string uri)
+        {
+            return new UnityHttpRequest(UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.UNKNOWN));
+        }
+
         public IHttpRequest Post(string uri, string postData)
         {
             return new UnityHttpRequest(UnityWebRequest.PostWwwForm(uri, postData));
@@ -104,7 +109,7 @@ namespace STYLY.Http.Service.Unity
             {
                 // Delete cache downloading flag file
                 CacheUtils.DeleteCacheDownloadingFlagFile(response.Url, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
-                
+
                 onError?.Invoke(response);
             }
             else
@@ -131,7 +136,7 @@ namespace STYLY.Http.Service.Unity
             {
                 Url = unityWebRequest.url,
                 Bytes = unityWebRequest.downloadHandler?.data,
-                Text = unityWebRequest.downloadHandler?.text,
+                Text = (unityWebRequest.downloadHandler as DownloadHandlerAudioClip)?.audioClip ? "" : unityWebRequest.downloadHandler?.text,
                 IsSuccessful = unityWebRequest.result != UnityWebRequest.Result.ProtocolError
                             && unityWebRequest.result != UnityWebRequest.Result.ConnectionError,
                 IsHttpError = unityWebRequest.result == UnityWebRequest.Result.ProtocolError,
@@ -139,7 +144,8 @@ namespace STYLY.Http.Service.Unity
                 Error = unityWebRequest.error,
                 StatusCode = unityWebRequest.responseCode,
                 ResponseHeaders = unityWebRequest.GetResponseHeaders(),
-                Texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture)?.texture
+                Texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture)?.texture,
+                AudioClip = (unityWebRequest.downloadHandler as DownloadHandlerAudioClip)?.audioClip,
             };
         }
 

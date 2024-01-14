@@ -7,6 +7,7 @@ using System;
 
 // ToDo
 // ・isDownloadingファイルが存在する間は待つ処理を入れる
+// ・エラーが起きた場合にもisDownloadingのクリーンアップ
 // ・isDownloadingのクリーンアップ関数作成
 // ・キャッシュファイルのクリーンアップ関数作成
 

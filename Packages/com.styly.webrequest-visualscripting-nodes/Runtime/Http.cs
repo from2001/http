@@ -106,6 +106,12 @@ namespace STYLY.Http
             return Instance.service.GetTexture(uri);
         }
 
+        /// <see cref="STYLY.Http.Service.IHttpService.GetAudioClip"/>
+        public static IHttpRequest GetAudioClip(string uri)
+        {
+            return Instance.service.GetAudioClip(uri);
+        }
+
         /// <see cref="STYLY.Http.Service.IHttpService.Post(string, string)"/>
         public static IHttpRequest Post(string uri, string postData)
         {
