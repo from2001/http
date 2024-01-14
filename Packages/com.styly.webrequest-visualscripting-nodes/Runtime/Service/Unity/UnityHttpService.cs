@@ -95,14 +95,23 @@ namespace STYLY.Http.Service.Unity
 
             if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
             {
+                // Delete cache downloading flag file
+                CacheUtils.DeleteCacheDownloadingFlagFile(response.Url, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
+
                 onNetworkError?.Invoke(response);
             }
             else if (unityWebRequest.result == UnityWebRequest.Result.ProtocolError)
             {
+                // Delete cache downloading flag file
+                CacheUtils.DeleteCacheDownloadingFlagFile(response.Url, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
+                
                 onError?.Invoke(response);
             }
             else
             {
+                // Create ccache file
+                CacheUtils.CreateCacheFile(response.Url, response.Bytes, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
+
                 onSuccess?.Invoke(response);
             }
         }

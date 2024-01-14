@@ -1,8 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace STYLY.Http.Service {
-    public interface IHttpRequest {
+namespace STYLY.Http.Service
+{
+    public enum CacheType
+    {
+        DoNotUseCache = 0,
+        UseCacheAlways = 1,
+        UseCacheOnlyWhenOffline = 2
+    }
+
+    public interface IHttpRequest
+    {
         IHttpRequest RemoveSuperHeaders();
         IHttpRequest SetHeader(string key, string value);
         IHttpRequest SetHeaders(IEnumerable<KeyValuePair<string, string>> headers);
@@ -16,5 +25,7 @@ namespace STYLY.Http.Service {
         IHttpRequest Send();
         IHttpRequest SetRedirectLimit(int redirectLimit);
         void Abort();
+        IHttpRequest UseCache(CacheType cacheType = CacheType.UseCacheAlways, string[] ignorePatternsForCacheFilePathGeneration = null);
+        //IHttpRequest UseCacheOnlyWhenOffline();
     }
 }

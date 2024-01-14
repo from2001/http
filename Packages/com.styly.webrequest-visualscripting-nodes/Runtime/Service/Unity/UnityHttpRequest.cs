@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using UnityEngine.Networking;
 
-namespace STYLY.Http.Service.Unity {
-    public class UnityHttpRequest : IHttpRequest, IUpdateProgress {
+namespace STYLY.Http.Service.Unity
+{
+    public class UnityHttpRequest : IHttpRequest, IUpdateProgress
+    {
         internal UnityWebRequest UnityWebRequest => unityWebRequest;
 
         private readonly UnityWebRequest unityWebRequest;
@@ -19,68 +21,85 @@ namespace STYLY.Http.Service.Unity {
         private float downloadProgress;
         private float uploadProgress;
 
-        public UnityHttpRequest(UnityWebRequest unityWebRequest) {
+        public string[] ignorePatternsForCacheFilePathGeneration;
+
+        public UnityHttpRequest(UnityWebRequest unityWebRequest)
+        {
             this.unityWebRequest = unityWebRequest;
             headers = new Dictionary<string, string>(Http.GetSuperHeaders());
         }
 
-        public IHttpRequest RemoveSuperHeaders() {
-            foreach (var kvp in Http.GetSuperHeaders()) {
+        public IHttpRequest RemoveSuperHeaders()
+        {
+            foreach (var kvp in Http.GetSuperHeaders())
+            {
                 headers.Remove(kvp.Key);
             }
 
             return this;
         }
 
-        public IHttpRequest SetHeader(string key, string value) {
+        public IHttpRequest SetHeader(string key, string value)
+        {
             headers[key] = value;
             return this;
         }
 
-        public IHttpRequest SetHeaders(IEnumerable<KeyValuePair<string, string>> headers) {
-            foreach (var kvp in headers) {
+        public IHttpRequest SetHeaders(IEnumerable<KeyValuePair<string, string>> headers)
+        {
+            foreach (var kvp in headers)
+            {
                 SetHeader(kvp.Key, kvp.Value);
             }
 
             return this;
         }
 
-        public IHttpRequest OnUploadProgress(Action<float> onProgress) {
+        public IHttpRequest OnUploadProgress(Action<float> onProgress)
+        {
             onUploadProgress += onProgress;
             return this;
         }
 
-        public IHttpRequest OnDownloadProgress(Action<float> onProgress) {
+        public IHttpRequest OnDownloadProgress(Action<float> onProgress)
+        {
             onDownloadProgress += onProgress;
             return this;
         }
 
-        public IHttpRequest OnSuccess(Action<HttpResponse> onSuccess) {
+        public IHttpRequest OnSuccess(Action<HttpResponse> onSuccess)
+        {
             this.onSuccess += onSuccess;
             return this;
         }
 
-        public IHttpRequest OnError(Action<HttpResponse> onError) {
+        public IHttpRequest OnError(Action<HttpResponse> onError)
+        {
             this.onError += onError;
             return this;
         }
 
-        public IHttpRequest OnNetworkError(Action<HttpResponse> onNetworkError) {
+        public IHttpRequest OnNetworkError(Action<HttpResponse> onNetworkError)
+        {
             this.onNetworkError += onNetworkError;
             return this;
         }
 
-        public bool RemoveHeader(string key) {
+        public bool RemoveHeader(string key)
+        {
             return headers.Remove(key);
         }
 
-        public IHttpRequest SetTimeout(int duration) {
+        public IHttpRequest SetTimeout(int duration)
+        {
             unityWebRequest.timeout = duration;
             return this;
         }
 
-        public IHttpRequest Send() {
-            foreach (var header in headers) {
+        public IHttpRequest Send()
+        {
+            foreach (var header in headers)
+            {
                 unityWebRequest.SetRequestHeader(header.Key, header.Value);
             }
 
@@ -88,25 +107,45 @@ namespace STYLY.Http.Service.Unity {
             return this;
         }
 
-        public IHttpRequest SetRedirectLimit(int redirectLimit) {
+        public IHttpRequest SetRedirectLimit(int redirectLimit)
+        {
             UnityWebRequest.redirectLimit = redirectLimit;
             return this;
         }
 
-        public void UpdateProgress() {
+        public void UpdateProgress()
+        {
             UpdateProgress(ref downloadProgress, unityWebRequest.downloadProgress, onDownloadProgress);
             UpdateProgress(ref uploadProgress, unityWebRequest.uploadProgress, onUploadProgress);
         }
 
-        public void Abort() {
+        public void Abort()
+        {
             Http.Instance.Abort(this);
         }
 
-        private void UpdateProgress(ref float currentProgress, float progress, Action<float> onProgress) {
-            if (currentProgress < progress) {
+        private void UpdateProgress(ref float currentProgress, float progress, Action<float> onProgress)
+        {
+            if (currentProgress < progress)
+            {
                 currentProgress = progress;
                 onProgress?.Invoke(currentProgress);
             }
+        }
+
+        public IHttpRequest UseCache(CacheType cacheType = CacheType.UseCacheAlways, string[] ignorePatternsForCacheFilePathGeneration = null)
+        {
+
+#if USE_CLOUD_SIGNED_URL_IN_CACHEUTILS
+            // Add Cloud Signed URL ignore patterns if contents are stored in cloud storage with signed URL
+            ignorePatternsForCacheFilePathGeneration = (ignorePatternsForCacheFilePathGeneration ?? Enumerable.Empty<string>())
+                .Concat(CacheUtils.GetSignedUrlIgnorePatters())
+                .ToArray();
+#endif
+
+            this.ignorePatternsForCacheFilePathGeneration = ignorePatternsForCacheFilePathGeneration;
+            Http.Instance.UseCache(this, cacheType);
+            return this;
         }
     }
 }

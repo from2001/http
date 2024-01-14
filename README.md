@@ -9,11 +9,16 @@ The Http instance will run the WebRequest coroutines for you so you don't have t
 
 ## Features
 
+Original features
+
 * Singleton
 * Fluent API for configuration
 * Success, error and network error events
 * Super headers
-* Contents cache (To be implemented)
+
+New features
+
+* Downloaded data cache
 * Visual Scripting Nodes (To be implemented)
 
 ## Requirements
@@ -24,7 +29,7 @@ The Http instance will run the WebRequest coroutines for you so you don't have t
 
 ## Installation
 
-To be updated
+(To be updated)
 
 ## How to use it
 
@@ -32,13 +37,68 @@ If you are using an AssemblyDefinition then reference the Http Assembly.
 Import the namespace `using STYLY.Http;`
 
 ```c#
-var request = Http.Get("http://mywebapi.com/")
+var request = Http.Get("http://YOURWEBSITE.com/xxxxx.txt")
  .SetHeader("Authorization", "username:password")
  .OnSuccess(response => Debug.Log(response.Text))
  .OnError(response => Debug.Log(response.StatusCode))
  .OnDownloadProgress(progress => Debug.Log(progress))
  .Send();
 ```
+
+```c#
+// with caching
+var request = Http.Get("http://YOURWEBSITE.com/xxxxx.txt")
+ .UseCache() // <= Downloaded data will be cached
+ .SetHeader("Authorization", "username:password")
+ .OnSuccess(response => Debug.Log(response.Text))
+ .OnError(response => Debug.Log(response.StatusCode))
+ .OnDownloadProgress(progress => Debug.Log(progress))
+ .Send();
+```
+
+```c#
+//  You may want to use CacheType.UseCacheOnlyWhenOffline option for data feed like RSS or RestAPI
+
+var request = Http.Get("http://YOURWEBSITE.com/xxxxx.json")
+ .UseCache(CacheType.UseCacheOnlyWhenOffline) // <= Load data from cache only when offline
+ .SetHeader("Authorization", "username:password")
+ .OnSuccess(response => Debug.Log(response.Text))
+ .OnError(response => Debug.Log(response.StatusCode))
+ .OnDownloadProgress(progress => Debug.Log(progress))
+ .Send();
+```
+
+```c#
+// Cache file will be generated based of its URL. So if signed URL is used, a cache file will be created every time since Signed URL changes for each access even for the same content. There are several options to avoid it. 
+
+string url = "https://storage.googleapis.com/aaaaaa/bbbbbb/cccccc.png?Expires=11111111&GoogleAccessId=dddddd&Signature=eeeeeeee"
+string[] ignorePatterns;
+
+// Option A: You can set ignore patterns manually.
+ignorePatterns = new string[] {
+    // for Google Cloud Storage
+    "(Expires=[^&]+&?|GoogleAccessId=[^&]+&?|Signature=[^&]+&?)", 
+    // for Amazon CloudFront
+    "(Expires=[^&]*&?|Signature=[^&]*&?|Key-Pair-Id=[^&]*&?)",  
+    // for Azure Blob Storage
+    "(se=[^&]*&?|sp=[^&]*&?|sv=[^&]*&?|sr=[^&]*&?|sig=[^&]*&?)"
+};
+
+// Option B: You can use the following method to get ignore patterns of signed URLs for major cloud service.
+ignorePatterns = CacheUtils.GetSignedUrlIgnorePatters();
+
+var request = Http.Get(url)
+.UseCache(CacheType.UseCacheAlways, ignorePatterns)
+.OnSuccess(response => Debug.Log(response.Text))
+.OnError(response => Debug.Log(response.StatusCode))
+.OnDownloadProgress(progress => Debug.Log(progress))
+.Send();
+
+// Option C: Set `USE_CLOUD_SIGNED_URL_IN_CACHEUTILS` in `Project Settings` - `Player` - `Scripting Define Symbols`
+
+
+```
+
 
 ## API
 
@@ -127,7 +187,6 @@ This has the following properties:
 * `bool IsHttpError`  
 * `bool IsNetworkError`  
 * `long StatusCode`  
-* `ResponseType ResponseType`  
 * `byte[] Bytes`  
 * `string Text`  
 * `string Error`  
