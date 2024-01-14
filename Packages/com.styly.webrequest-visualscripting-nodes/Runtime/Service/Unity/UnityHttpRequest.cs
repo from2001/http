@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using UnityEngine.Networking;
 
 namespace STYLY.Http.Service.Unity
@@ -135,14 +135,17 @@ namespace STYLY.Http.Service.Unity
 
         public IHttpRequest UseCache(CacheType cacheType = CacheType.UseCacheAlways, string[] ignorePatternsForCacheFilePathGeneration = null)
         {
+
+#if USE_CLOUD_SIGNED_URL_IN_CACHEUTILS
+            // Add Cloud Signed URL ignore patterns if contents are stored in cloud storage with signed URL
+            ignorePatternsForCacheFilePathGeneration = (ignorePatternsForCacheFilePathGeneration ?? Enumerable.Empty<string>())
+                .Concat(CacheUtils.GetSignedUrlIgnorePatters())
+                .ToArray();
+#endif
+
             this.ignorePatternsForCacheFilePathGeneration = ignorePatternsForCacheFilePathGeneration;
             Http.Instance.UseCache(this, cacheType);
             return this;
         }
-
-        // public IHttpRequest UseCacheOnlyWhenOffline() {
-        //     Http.Instance.UseCacheOnlyWhenOffline(this);
-        //     return this;
-        // }
     }
 }

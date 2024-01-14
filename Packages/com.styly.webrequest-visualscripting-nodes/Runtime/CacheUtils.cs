@@ -2,6 +2,13 @@ using UnityEngine;
 using System.Security.Cryptography;
 using System.Text;
 using System.Net.NetworkInformation;
+using System.Collections.Generic;
+using System;
+
+// ToDo
+// ・isDownloadingファイルが存在する間は待つ処理を入れる
+// ・isDownloadingのクリーンアップ関数作成
+// ・キャッシュファイルのクリーンアップ関数作成
 
 namespace STYLY.Http
 {
@@ -34,12 +41,13 @@ namespace STYLY.Http
 
         public static string RemoveIgnorePatternsFromUri(string uri, string[] ignorePatternsForCacheFilePathGeneration)
         {
-            if(ignorePatternsForCacheFilePathGeneration != null){
-            foreach (string ignorePattern in ignorePatternsForCacheFilePathGeneration)
+            if (ignorePatternsForCacheFilePathGeneration != null)
             {
-                // Remove ignore pattern from uri with regex
-                uri = System.Text.RegularExpressions.Regex.Replace(uri, ignorePattern, "");
-            }
+                foreach (string ignorePattern in ignorePatternsForCacheFilePathGeneration)
+                {
+                    // Remove ignore pattern from uri with regex
+                    uri = System.Text.RegularExpressions.Regex.Replace(uri, ignorePattern, "");
+                }
             }
             return uri;
         }
@@ -113,6 +121,16 @@ namespace STYLY.Http
                 sb.Append(b.ToString("x2"));
             }
             return sb.ToString();
+        }
+
+        public static string[] GetSignedUrlIgnorePatters()
+        {
+            string[] patterns = new string[] {
+                "(Expires=[^&]+&?|GoogleAccessId=[^&]+&?|Signature=[^&]+&?)", // for Google Cloud Storage
+                "(Expires=[^&]*&?|Signature=[^&]*&?|Key-Pair-Id=[^&]*&?)",  // for Amazon CloudFront
+                "(se=[^&]*&?|sp=[^&]*&?|sv=[^&]*&?|sr=[^&]*&?|sig=[^&]*&?)"  // for Azure Blob Storage
+            };
+            return patterns;
         }
 
     }
