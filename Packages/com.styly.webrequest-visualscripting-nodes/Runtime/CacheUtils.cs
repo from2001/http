@@ -13,6 +13,13 @@ using System;
 
 namespace STYLY.Http
 {
+    public enum CacheType
+    {
+        DoNotUseCache = 0,
+        UseCacheAlways = 1,
+        UseCacheOnlyWhenOffline = 2
+    }
+
     public class CacheUtils
     {
         private static readonly string cacheDir = Application.persistentDataPath + "/cache/";

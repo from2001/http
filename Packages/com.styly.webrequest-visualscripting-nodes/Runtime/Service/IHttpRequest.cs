@@ -3,13 +3,6 @@ using System.Collections.Generic;
 
 namespace STYLY.Http.Service
 {
-    public enum CacheType
-    {
-        DoNotUseCache = 0,
-        UseCacheAlways = 1,
-        UseCacheOnlyWhenOffline = 2
-    }
-
     public interface IHttpRequest
     {
         IHttpRequest RemoveSuperHeaders();
