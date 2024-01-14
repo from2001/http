@@ -136,7 +136,7 @@ namespace STYLY.Http.Service.Unity
             {
                 Url = unityWebRequest.url,
                 Bytes = unityWebRequest.downloadHandler?.data,
-                Text = (unityWebRequest.downloadHandler as DownloadHandlerAudioClip)?.audioClip ? "" : unityWebRequest.downloadHandler?.text,
+                Text = (unityWebRequest.downloadHandler as DownloadHandlerAudioClip)?.audioClip ? null : unityWebRequest.downloadHandler?.text,
                 IsSuccessful = unityWebRequest.result != UnityWebRequest.Result.ProtocolError
                             && unityWebRequest.result != UnityWebRequest.Result.ConnectionError,
                 IsHttpError = unityWebRequest.result == UnityWebRequest.Result.ProtocolError,
