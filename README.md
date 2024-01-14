@@ -18,7 +18,8 @@ Original features
 
 New features
 
-* Downloaded data cache
+* Data cache support
+* AudioClip support (To be implemented)
 * Visual Scripting Nodes (To be implemented)
 
 ## Requirements
