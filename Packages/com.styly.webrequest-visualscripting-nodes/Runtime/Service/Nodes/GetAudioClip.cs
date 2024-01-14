@@ -10,11 +10,11 @@ using STYLY.Http.Service.Unity;
 
 namespace WebrequestVisualScriptingNodes
 {
-    [UnitShortTitle("Get Text")]
-    [UnitTitle("Get Text")]
+    [UnitShortTitle("Get AudioClip")]
+    [UnitTitle("Get AudioClip")]
     [UnitCategory("Web Request")]
-    [UnitSubtitle("Get text with URL")]
-    public class GetText : Unit
+    [UnitSubtitle("Get AudioClip with URL")]
+    public class GetAudioClip : Unit
     {
         [DoNotSerialize]
         public ControlInput inputTrigger;
@@ -37,7 +37,7 @@ namespace WebrequestVisualScriptingNodes
         [DoNotSerialize]
         public ValueOutput progress;
 
-        private string resultValue;
+        private AudioClip resultValue;
         private float progressValue;
         private float progressValuePrev;
         protected override void Definition()
@@ -48,7 +48,7 @@ namespace WebrequestVisualScriptingNodes
             outputTrigger_Progress = ControlOutput("Progress");
 
             URL = ValueInput<string>("URL", "");
-            result = ValueOutput<string>("Text", (flow) => resultValue);
+            result = ValueOutput<AudioClip>("AudioClip", (flow) => resultValue);
             progress = ValueOutput<float>("Progress Value", (flow) => progressValue);
         }
 
@@ -56,7 +56,7 @@ namespace WebrequestVisualScriptingNodes
         {
             string url = flow.GetValue<string>(URL);
             HttpResponse httpResponse = null;
-            UniTask.Create(async () => { httpResponse = await GetTextTask(url); }).Forget();
+            UniTask.Create(async () => { httpResponse = await GetAudioClipTask(url); }).Forget();
 
             while (httpResponse == null)
             {
@@ -70,7 +70,7 @@ namespace WebrequestVisualScriptingNodes
 
             if (httpResponse.IsSuccessful)
             {
-                resultValue = httpResponse.Text;
+                resultValue = httpResponse.AudioClip;
                 yield return outputTrigger;
             }
             else
@@ -80,10 +80,10 @@ namespace WebrequestVisualScriptingNodes
             }
         }
 
-        private async UniTask<HttpResponse> GetTextTask(string url)
+        private async UniTask<HttpResponse> GetAudioClipTask(string url)
         {
-            HttpResponse httpResponse = await Http.Get(url)
-            .UseCache(CacheType.UseCacheOnlyWhenOffline)
+            HttpResponse httpResponse = await Http.GetAudioClip(url)
+            .UseCache(CacheType.UseCacheAlways)
             .OnError(response => Debug.Log(response.StatusCode))
             .OnNetworkError(response => Debug.Log("NetWorkError"))
             .OnDownloadProgress(progress => progressValue = progress)
