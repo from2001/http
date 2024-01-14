@@ -22,6 +22,13 @@ namespace STYLY.Http.Service {
         IHttpRequest GetTexture(string uri);
 
         /// <summary>
+        /// Creates a HttpRequest configured for HTTP GET.
+        /// </summary>
+        /// <param name="uri">The URI of the resource to retrieve via HTTP GET.</param>
+        /// <returns>A HttpRequest object configured to retrieve data from uri.</returns>
+        IHttpRequest GetAudioClip(string uri);
+
+        /// <summary>
         /// Creates a HttpRequest configured to send form data to a server via HTTP POST.
         /// </summary>
         /// <param name="uri">The target URI to which form data will be transmitted.</param>

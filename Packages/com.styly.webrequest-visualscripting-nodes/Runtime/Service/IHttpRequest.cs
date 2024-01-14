@@ -26,6 +26,5 @@ namespace STYLY.Http.Service
         IHttpRequest SetRedirectLimit(int redirectLimit);
         void Abort();
         IHttpRequest UseCache(CacheType cacheType = CacheType.UseCacheAlways, string[] ignorePatternsForCacheFilePathGeneration = null);
-        //IHttpRequest UseCacheOnlyWhenOffline();
     }
 }

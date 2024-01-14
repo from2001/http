@@ -18,6 +18,7 @@ Original features
 
 New features
 
+* AudioClip support
 * Downloaded data cache
 * Visual Scripting Nodes (To be implemented)
 
@@ -37,18 +38,9 @@ If you are using an AssemblyDefinition then reference the Http Assembly.
 Import the namespace `using STYLY.Http;`
 
 ```c#
+// Get text
 var request = Http.Get("http://YOURWEBSITE.com/xxxxx.txt")
- .SetHeader("Authorization", "username:password")
- .OnSuccess(response => Debug.Log(response.Text))
- .OnError(response => Debug.Log(response.StatusCode))
- .OnDownloadProgress(progress => Debug.Log(progress))
- .Send();
-```
-
-```c#
-// with caching
-var request = Http.Get("http://YOURWEBSITE.com/xxxxx.txt")
- .UseCache() // <= Downloaded data will be cached
+ .UseCache(CacheType.UseCacheAlways)
  .SetHeader("Authorization", "username:password")
  .OnSuccess(response => Debug.Log(response.Text))
  .OnError(response => Debug.Log(response.StatusCode))
@@ -67,6 +59,33 @@ var request = Http.Get("http://YOURWEBSITE.com/xxxxx.json")
  .OnDownloadProgress(progress => Debug.Log(progress))
  .Send();
 ```
+
+```c#
+// Get Texture 
+var request = Http.GetTexture("http://YOURWEBSITE.com/xxxxx.jpg")
+ .UseCache(CacheType.UseCacheAlways)
+ .OnSuccess(response => {
+     Debug.Log(response.Texture.width);
+     Debug.Log(response.Texture.height);
+ })
+ .OnError(response => Debug.Log(response.StatusCode))
+ .OnDownloadProgress(progress => Debug.Log(progress))
+ .Send();
+```
+
+```c#
+// Get AudioClip 
+var request = Http.GetAudioClip("http://YOURWEBSITE.com/xxxxx.mp3")
+ .UseCache(CacheType.UseCacheAlways)
+ .OnSuccess(response => {
+     Debug.Log(response.AudioClip.frequency);
+ })
+ .OnError(response => Debug.Log(response.StatusCode))
+ .OnDownloadProgress(progress => Debug.Log(progress))
+ .Send();
+```
+
+
 
 ```c#
 // Cache file will be generated based of its URL. So if signed URL is used, a cache file will be created every time since Signed URL changes for each access even for the same content. There are several options to avoid it. 
