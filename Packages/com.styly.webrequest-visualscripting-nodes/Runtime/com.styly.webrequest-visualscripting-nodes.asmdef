@@ -2,7 +2,10 @@
     "name": "com.styly.webrequest-visualscripting-nodes",
     "rootNamespace": "",
     "references": [
-        "UniTask"
+        "UniTask",
+        "Unity.VisualScripting.Core",
+        "Unity.VisualScripting.Flow",
+        "Unity.VisualScripting.State"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

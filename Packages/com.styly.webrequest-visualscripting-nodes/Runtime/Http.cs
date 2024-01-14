@@ -28,10 +28,6 @@ namespace STYLY.Http
         private Dictionary<string, string> superHeaders;
         private Dictionary<IHttpRequest, Coroutine> httpRequests;
 
-        // private bool useCacheFlag = false;
-        // private bool useCacheOnlyWhenOfflineFlag = false;
-        //private string cacheDownloadingUri = "";
-
         public static void Init(IHttpService service)
         {
             if (instance) return;
@@ -240,12 +236,16 @@ namespace STYLY.Http
                     throw new ArgumentOutOfRangeException(nameof(cacheType), cacheType, null);
             }
 
+            // Determine whether to use cache and uri to use
             var unityHttpRequest = request as UnityHttpRequest;
             string[] ignorePatternsForCacheFilePathGeneration = unityHttpRequest.ignorePatternsForCacheFilePathGeneration;
-
             var uri = new Uri(CacheUtils.GetWebRequestUri(unityHttpRequest.UnityWebRequest.uri.ToString(), useCacheFlag, useCacheOnlyWhenOfflineFlag, ignorePatternsForCacheFilePathGeneration));
+
+            // Set uri to UnityWebRequest
             unityHttpRequest.UnityWebRequest.uri = uri;
-            if (!uri.IsFile) { CacheUtils.CreateCacheDownloadingFlagFile(uri.ToString(), ignorePatternsForCacheFilePathGeneration); }
+
+            // Create cache downloading flag file
+            if (!uri.IsFile && cacheType!=CacheType.DoNotUseCache) { CacheUtils.CreateCacheDownloadingFlagFile(uri.ToString(), ignorePatternsForCacheFilePathGeneration); }
         }
     }
 }

@@ -1,18 +1,16 @@
 using UnityEngine;
 using System.Security.Cryptography;
 using System.Text;
-using System.Net.NetworkInformation;
-using System.Collections.Generic;
-using System;
-
-// ToDo
-// ・isDownloadingファイルが存在する間は待つ処理を入れる
-// ・エラーが起きた場合にもisDownloadingのクリーンアップ
-// ・isDownloadingのクリーンアップ関数作成
-// ・キャッシュファイルのクリーンアップ関数作成
 
 namespace STYLY.Http
 {
+    public enum CacheType
+    {
+        DoNotUseCache = 0,
+        UseCacheAlways = 1,
+        UseCacheOnlyWhenOffline = 2
+    }
+
     public class CacheUtils
     {
         private static readonly string cacheDir = Application.persistentDataPath + "/cache/";
@@ -102,7 +100,7 @@ namespace STYLY.Http
 
         public static bool IsOnline()
         {
-            return NetworkInterface.GetIsNetworkAvailable();
+            return !(Application.internetReachability == NetworkReachability.NotReachable);
         }
 
         /// <summary>
