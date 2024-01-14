@@ -1,11 +1,13 @@
-# http
+# Visual Scripting Nodes for WebRequest
 
 Note: This is a fork of [adrenak's http](https://github.com/adrenak/http) which is a fork of [Dubit's unity-http](https://www.github.com/dubit/unity-http)
   
 ## What is it?
 
-The Http system has a quick and easy API for making http requests within Unity.  
-The Http instance will run the WebRequest coroutines for you so you don't have to create it per request.
+Visual Scripting Node library for Webrequest which is based on Http Unity package developed by Dubit.
+The Http system has a quick and easy API for making http requests within Unity. The Http instance will run the WebRequest coroutines for you so you don't have to create it per request.
+
+![WebRequestVisualScriptingNodes](https://github.com/styly-dev/WebRequest_VisualScriptingNodes/assets/387880/4827b358-abaa-4726-ae82-b9ecffb63778)
 
 ## Features
 
@@ -20,7 +22,7 @@ New features
 
 * Data cache support
 * AudioClip support
-* Visual Scripting Nodes support (To be implemented)
+* Visual Scripting Nodes support
 
 ## Requirements
 
@@ -30,9 +32,18 @@ New features
 
 ## Installation
 
-(To be updated)
+`openupm add com.styly.webrequest-visualscripting-nodes`
 
-## How to use it
+## How to use with Visual Scripting
+Find the WebRequest custom nodes in `WebRequest` category with the fuzzy finder.
+
+- Get Text node
+- Get Texture node
+- Get AudioClip node
+- POST node (To be implemented)
+- POST Texture node (To be implemented)
+
+## How to use Http with C# code
 
 If you are using an AssemblyDefinition then reference the Http Assembly.  
 Import the namespace `using STYLY.Http;`
