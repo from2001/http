@@ -10,6 +10,8 @@ using System;
 // ・エラーが起きた場合にもisDownloadingのクリーンアップ
 // ・isDownloadingのクリーンアップ関数作成
 // ・キャッシュファイルのクリーンアップ関数作成
+// ・エラーハンドリング確認(ネットワークエラーなど)
+// ・DoNotUseCacheのときにキャッシュを作らないように - [済]
 
 namespace STYLY.Http
 {

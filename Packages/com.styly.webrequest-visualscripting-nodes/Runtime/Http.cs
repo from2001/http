@@ -245,7 +245,7 @@ namespace STYLY.Http
             unityHttpRequest.UnityWebRequest.uri = uri;
 
             // Create cache downloading flag file
-            if (!uri.IsFile) { CacheUtils.CreateCacheDownloadingFlagFile(uri.ToString(), ignorePatternsForCacheFilePathGeneration); }
+            if (!uri.IsFile && cacheType!=CacheType.DoNotUseCache) { CacheUtils.CreateCacheDownloadingFlagFile(uri.ToString(), ignorePatternsForCacheFilePathGeneration); }
         }
     }
 }

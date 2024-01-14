@@ -114,7 +114,7 @@ namespace STYLY.Http.Service.Unity
             }
             else
             {
-                // Create ccache file
+                // Create cache file
                 CacheUtils.CreateCacheFile(response.Url, response.Bytes, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
 
                 onSuccess?.Invoke(response);
