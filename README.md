@@ -20,7 +20,7 @@ New features
 
 * Data cache support
 * AudioClip support
-* Visual Scripting Nodes support (To be implemented)
+* Visual Scripting Nodes support
 
 ## Requirements
 
