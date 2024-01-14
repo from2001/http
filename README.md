@@ -56,6 +56,7 @@ var request = Http.Get("http://YOURWEBSITE.com/xxxxx.json")
  .SetHeader("Authorization", "username:password")
  .OnSuccess(response => Debug.Log(response.Text))
  .OnError(response => Debug.Log(response.StatusCode))
+ .OnNetworkError(response => Debug.Log("Network Error"))
  .OnDownloadProgress(progress => Debug.Log(progress))
  .Send();
 ```
@@ -85,8 +86,6 @@ var request = Http.GetAudioClip("http://YOURWEBSITE.com/xxxxx.mp3")
  .Send();
 ```
 
-
-
 ```c#
 // Cache file will be generated based of its URL. So if signed URL is used, a cache file will be created every time since Signed URL changes for each access even for the same content. There are several options to avoid it. 
 
@@ -114,8 +113,25 @@ var request = Http.Get(url)
 .Send();
 
 // Option C: Set `USE_CLOUD_SIGNED_URL_IN_CACHEUTILS` in `Project Settings` - `Player` - `Scripting Define Symbols`
+```
 
+```C#
+// Asynchronous call
+async void Start()
+{
+    var url = "http://YOURWEBSITE.com/xxxxx.txt";
+    HttpResponse httpResponse = await Http.Get(url)
+    .UseCache(CacheType.UseCacheAlways)
+    .OnSuccess(response => {
+        Debug.Log(response.Text);
+    })
+    .OnError(response => Debug.Log(response.StatusCode))
+    .OnDownloadProgress(progress => Debug.Log(progress))
+    .SendAsync();
 
+    Debug.Log("Web request task completed.");
+    Debug.Log(httpResponse.Text);
+}
 ```
 
 
@@ -129,6 +145,7 @@ All these methods return a new HttpRequest.
 
 * `Http.Get(string uri)`  
 * `Http.GetTexture(string uri)`  
+* `Http.GetAudioClip(string uri)`  
 
 #### Post
 
@@ -180,6 +197,10 @@ All these methods return the HttpRequest instance.
 * `SetRedirectLimit(int redirectLimit)`
 * `SetTimeout(int duration)`
 
+#### Data cache
+* `UseCache(CacheType cacheType = CacheType.UseCacheAlways, string[] ignorePatternsForCacheFilePathGeneration = null)`
+
+
 Redirect limit subject to Unity's documentation.  
 
 * [Redirect Limit Documentation](https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest-redirectLimit.html)
@@ -210,6 +231,7 @@ This has the following properties:
 * `string Text`  
 * `string Error`  
 * `Texture Texture`  
+* `AudioClip AudioClip`  
 * `Dictionary<string, string> ResponseHeaders`  
 
 ### Super Headers

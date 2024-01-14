@@ -12,6 +12,9 @@ using System;
 // ・キャッシュファイルのクリーンアップ関数作成
 // ・エラーハンドリング確認(ネットワークエラーなど)
 // ・DoNotUseCacheのときにキャッシュを作らないように - [済]
+// ・POSTの挙動確認
+// ・POSTでもTexture取れたほうが良い（ https://chat.openai.com/c/8405d5cf-b771-45cf-b3e1-22d3131b814a ）
+// ・POSTするときにwebRequest.downloadHandler = new DownloadHandlerTexture();しておくとTextureもTextも両方取れる可能性を確認。
 
 namespace STYLY.Http
 {
