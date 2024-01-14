@@ -114,7 +114,7 @@ namespace STYLY.Http
 
         public static bool IsOnline()
         {
-            return NetworkInterface.GetIsNetworkAvailable();
+            return !(Application.internetReachability == NetworkReachability.NotReachable);
         }
 
         /// <summary>
