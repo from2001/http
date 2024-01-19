@@ -128,6 +128,9 @@ var request = Http.Get(url)
 
 ```C#
 // Asynchronous call
+using STYLY.Http;
+using STYLY.Http.Service;
+
 async void Start()
 {
     var url = "http://YOURWEBSITE.com/xxxxx.txt";
