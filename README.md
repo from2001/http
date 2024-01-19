@@ -134,14 +134,12 @@ using STYLY.Http.Service;
 async void Start()
 {
     var url = "http://YOURWEBSITE.com/xxxxx.txt";
-    HttpResponse httpResponse = await Http.Get(url)
-    .UseCache(CacheType.UseCacheAlways)
-    .OnSuccess(response => {
-        Debug.Log(response.Text);
-    })
-    .OnError(response => Debug.Log(response.StatusCode))
-    .OnDownloadProgress(progress => Debug.Log(progress))
-    .SendAsync();
+    HttpResponse httpResponse = await Http.Get(URL)
+        .UseCache(CacheType.UseCacheAlways)
+        .OnSuccess(response => Debug.Log(response.Text))
+        .OnError(response => Debug.Log(response.StatusCode))
+        .OnDownloadProgress(progress => Debug.Log(progress))
+        .SendAsync();
 
     Debug.Log("Web request task completed.");
     Debug.Log(httpResponse.Text);
