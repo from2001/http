@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using UnityEditor;
 using UnityEngine.Networking;
 
 namespace STYLY.Http.Service.Unity
@@ -22,9 +24,11 @@ namespace STYLY.Http.Service.Unity
         private float uploadProgress;
 
         public string[] ignorePatternsForCacheFilePathGeneration;
+        public string URL;
 
         public UnityHttpRequest(UnityWebRequest unityWebRequest)
         {
+            this.URL = unityWebRequest.url;
             this.unityWebRequest = unityWebRequest;
             headers = new Dictionary<string, string>(Http.GetSuperHeaders());
         }
