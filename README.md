@@ -43,6 +43,16 @@ Find the WebRequest custom nodes in `WebRequest` category with the fuzzy finder.
 - POST node (To be implemented)
 - POST Texture node (To be implemented)
 
+## Samples (Visual Scripting)
+
+How to install samples
+
+Click `Import` button at `Window` - `Package Manager` - `Packages in Project` - `WebRequest Visual Scripting` - `Samples`
+
+Sample Music: 
+
+* [penguinmusic - Modern Chillout (Future Calm)](https://pixabay.com/music/upbeat-penguinmusic-modern-chillout-future-calm-12641/)
+
 ## How to use Http with C# code
 
 If you are using an AssemblyDefinition then reference the Http Assembly.  
