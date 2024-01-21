@@ -17,6 +17,8 @@ Original features
 * Fluent API for configuration
 * Success, error and network error events
 * Super headers
+* Get, POST, HEAD, DELETE, PUT support
+* GetTexture support
 
 New features
 
