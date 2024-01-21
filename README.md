@@ -17,6 +17,8 @@ Original features
 * Fluent API for configuration
 * Success, error and network error events
 * Super headers
+* Get, POST, HEAD, DELETE, PUT support
+* GetTexture support
 
 New features
 
@@ -42,6 +44,16 @@ Find the WebRequest custom nodes in `WebRequest` category with the fuzzy finder.
 - Get AudioClip node
 - POST node (To be implemented)
 - POST Texture node (To be implemented)
+
+## Samples (Visual Scripting)
+
+How to install samples
+
+Click `Import` button at `Window` - `Package Manager` - `Packages in Project` - `WebRequest Visual Scripting` - `Samples`
+
+Sample Music: 
+
+* [penguinmusic - Modern Chillout (Future Calm)](https://pixabay.com/music/upbeat-penguinmusic-modern-chillout-future-calm-12641/)
 
 ## How to use Http with C# code
 
@@ -128,17 +140,18 @@ var request = Http.Get(url)
 
 ```C#
 // Asynchronous call
+using STYLY.Http;
+using STYLY.Http.Service;
+
 async void Start()
 {
     var url = "http://YOURWEBSITE.com/xxxxx.txt";
-    HttpResponse httpResponse = await Http.Get(url)
-    .UseCache(CacheType.UseCacheAlways)
-    .OnSuccess(response => {
-        Debug.Log(response.Text);
-    })
-    .OnError(response => Debug.Log(response.StatusCode))
-    .OnDownloadProgress(progress => Debug.Log(progress))
-    .SendAsync();
+    HttpResponse httpResponse = await Http.Get(URL)
+        .UseCache(CacheType.UseCacheAlways)
+        .OnSuccess(response => Debug.Log(response.Text))
+        .OnError(response => Debug.Log(response.StatusCode))
+        .OnDownloadProgress(progress => Debug.Log(progress))
+        .SendAsync();
 
     Debug.Log("Web request task completed.");
     Debug.Log(httpResponse.Text);
