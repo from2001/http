@@ -6,7 +6,7 @@
   "unity": "2021.3",
   "repository": {
     "type": "git",
-    "url": "https://github.com/styly-dev"
+    "url": "https://github.com/styly-dev/WebRequest_VisualScriptingNodes/"
   },
   "author": {
     "name": "STYLY, Inc",
@@ -25,6 +25,13 @@
         "com.cysharp.unitask",
         "com.openupm"
       ]
+    }
+  ],
+  "samples": [
+    {
+      "displayName": "Usage samples",
+      "description": "Contains sample Visual Scripting Graphs for WebRequest Node",
+      "path": "Samples~/Sample1"
     }
   ]
 }
