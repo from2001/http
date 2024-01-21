@@ -140,13 +140,10 @@ var request = Http.Get(url)
 
 ```C#
 // Asynchronous call
-using STYLY.Http;
-using STYLY.Http.Service;
-
 async void Start()
 {
     var url = "http://YOURWEBSITE.com/xxxxx.txt";
-    HttpResponse httpResponse = await Http.Get(URL)
+    STYLY.Http.Service.HttpResponse httpResponse = await Http.Get(url)
         .UseCache(CacheType.UseCacheAlways)
         .OnSuccess(response => Debug.Log(response.Text))
         .OnError(response => Debug.Log(response.StatusCode))
