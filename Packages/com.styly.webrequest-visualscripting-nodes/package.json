@@ -1,7 +1,7 @@
 {
   "name": "com.styly.webrequest-visualscripting-nodes",
   "displayName": "WebRequest Visual Scripting",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Unity Visual Scripting Node for WebRequest",
   "unity": "2021.3",
   "repository": {
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "com.cysharp.unitask": "2.4.1",
-    "com.unity.visualscripting": "1.9.1"
+    "com.unity.visualscripting": "1.8.0"
   },
   "scopedRegistries": [
     {

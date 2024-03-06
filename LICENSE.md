@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2024 STYLY, Inc  
+Copyright (c) 2024 STYLY, Inc.  
 Copyright (c) 2021 Vatsal Ambastha  
 Copyright (c) 2017-2018 Dubit Ltd.  
 
