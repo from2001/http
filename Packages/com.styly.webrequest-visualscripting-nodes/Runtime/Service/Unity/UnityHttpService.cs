@@ -95,29 +95,32 @@ namespace STYLY.Http.Service.Unity
             var unityWebRequest = unityHttpRequest.UnityWebRequest;
 
             yield return unityWebRequest.SendWebRequest();
-
-            var response = CreateResponse(unityWebRequest);
-
-            if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
+            HttpResponse response = new();
+            try
             {
-                // Delete cache downloading flag file
-                CacheUtils.DeleteCacheDownloadingFlagFile(unityHttpRequest.URL, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
-
-                onNetworkError?.Invoke(response);
+                response = CreateResponse(unityWebRequest);
+                if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
+                {
+                    // Delete cache downloading flag file
+                    CacheUtils.DeleteCacheDownloadingFlagFile(unityHttpRequest.URL, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
+                    onNetworkError?.Invoke(response);
+                }
+                else if (unityWebRequest.result == UnityWebRequest.Result.ProtocolError)
+                {
+                    // Delete cache downloading flag file
+                    CacheUtils.DeleteCacheDownloadingFlagFile(unityHttpRequest.URL, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
+                    onError?.Invoke(response);
+                }
+                else
+                {
+                    // Create cache file
+                    CacheUtils.CreateCacheFile(unityHttpRequest.URL, response.Bytes, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
+                    onSuccess?.Invoke(response);
+                }
             }
-            else if (unityWebRequest.result == UnityWebRequest.Result.ProtocolError)
+            catch (Exception)
             {
-                // Delete cache downloading flag file
-                CacheUtils.DeleteCacheDownloadingFlagFile(unityHttpRequest.URL, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
-
                 onError?.Invoke(response);
-            }
-            else
-            {
-                // Create cache file
-                CacheUtils.CreateCacheFile(unityHttpRequest.URL, response.Bytes, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
-
-                onSuccess?.Invoke(response);
             }
         }
 
