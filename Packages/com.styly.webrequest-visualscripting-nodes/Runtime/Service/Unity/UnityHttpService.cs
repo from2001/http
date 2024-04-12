@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -22,7 +22,7 @@ namespace STYLY.Http.Service.Unity
 
         public IHttpRequest GetAudioClip(string uri, AudioType audioType = AudioType.UNKNOWN)
         {
-            return new UnityHttpRequest(UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.UNKNOWN));
+            return new UnityHttpRequest(UnityWebRequestMultimedia.GetAudioClip(uri, audioType));
         }
 
         public IHttpRequest Post(string uri, string postData)
@@ -94,12 +94,26 @@ namespace STYLY.Http.Service.Unity
             var unityHttpRequest = (UnityHttpRequest)request;
             var unityWebRequest = unityHttpRequest.UnityWebRequest;
 
-            yield return unityWebRequest.SendWebRequest();
             HttpResponse response = new();
+            UnityWebRequestAsyncOperation ret = null;
+            try
+            {
+                ret = unityWebRequest.SendWebRequest();
+            }
+            catch (Exception e)
+            {
+                response.Error = e.Message;
+            }
+            yield return ret;
+
             try
             {
                 response = CreateResponse(unityWebRequest);
-                if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
+                if (!response.IsSuccessful)
+                {
+                    onError?.Invoke(response);
+                }
+                else if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
                 {
                     // Delete cache downloading flag file
                     CacheUtils.DeleteCacheDownloadingFlagFile(unityHttpRequest.URL, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
@@ -118,8 +132,10 @@ namespace STYLY.Http.Service.Unity
                     onSuccess?.Invoke(response);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.Log(e.Message);
+                response.Error = e.Message;
                 onError?.Invoke(response);
             }
         }
@@ -135,22 +151,64 @@ namespace STYLY.Http.Service.Unity
 
         private static HttpResponse CreateResponse(UnityWebRequest unityWebRequest)
         {
-            return new HttpResponse
+            HttpResponse response = null;
+            try
             {
-                Url = unityWebRequest.url,
-                Bytes = unityWebRequest.downloadHandler?.data,
-                Text = (unityWebRequest.downloadHandler as DownloadHandlerAudioClip)?.audioClip ? null : unityWebRequest.downloadHandler?.text,
-                IsSuccessful = unityWebRequest.result != UnityWebRequest.Result.ProtocolError
-                            && unityWebRequest.result != UnityWebRequest.Result.ConnectionError,
-                IsHttpError = unityWebRequest.result == UnityWebRequest.Result.ProtocolError,
-                IsNetworkError = unityWebRequest.result == UnityWebRequest.Result.ConnectionError,
-                Error = unityWebRequest.error,
-                StatusCode = unityWebRequest.responseCode,
-                ResponseHeaders = unityWebRequest.GetResponseHeaders(),
-                Texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture)?.texture,
-                AudioClip = (unityWebRequest.downloadHandler as DownloadHandlerAudioClip)?.audioClip,
-            };
-        }
+                response = new HttpResponse
+                {
+                    Url = unityWebRequest.url,
+                    Bytes = unityWebRequest.downloadHandler?.data,
+                    Text = null,
+                    IsSuccessful = unityWebRequest.result != UnityWebRequest.Result.ProtocolError
+                                && unityWebRequest.result != UnityWebRequest.Result.ConnectionError,
+                    IsHttpError = unityWebRequest.result == UnityWebRequest.Result.ProtocolError,
+                    IsNetworkError = unityWebRequest.result == UnityWebRequest.Result.ConnectionError,
+                    Error = unityWebRequest.error,
+                    StatusCode = unityWebRequest.responseCode,
+                    ResponseHeaders = unityWebRequest.GetResponseHeaders(),
+                    Texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture)?.texture,
+                    AudioClip = (unityWebRequest.downloadHandler as DownloadHandlerAudioClip)?.audioClip,
+                };
 
+                if ((unityWebRequest.downloadHandler as DownloadHandlerAudioClip)?.GetType()
+                    == Type.GetType("UnityEngine.Networking.DownloadHandlerAudioClip, UnityEngine.UnityWebRequestAudioModule"))
+                {
+                    // AudioClip
+                    if (response.AudioClip == null || response.AudioClip.length == 0)
+                    {
+                        response.IsSuccessful = false;
+                        response.Error = "Failed to get AudioClip";
+                        Debug.Log("Failed to get AudioClip");
+                    }
+                }
+                else if ((unityWebRequest.downloadHandler as DownloadHandlerTexture)?.GetType()
+                    == Type.GetType("UnityEngine.Networking.DownloadHandlerTexture, UnityEngine.UnityWebRequestTextureModule"))
+                {
+                    // Texture
+                    if (response.Texture == null)
+                    {
+                        response.IsSuccessful = false;
+                        response.Error = "Failed to get Texture.";
+                        Debug.Log("Failed to get Texture.");
+                    }
+                }
+                else
+                {
+                    // Text
+                    response.Text = unityWebRequest.downloadHandler?.text;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);
+                response = new HttpResponse
+                {
+                    Url = unityWebRequest.url,
+                    IsSuccessful = false,
+                    Error = e.Message
+                };
+            }
+            return response;
+        }
     }
 }
