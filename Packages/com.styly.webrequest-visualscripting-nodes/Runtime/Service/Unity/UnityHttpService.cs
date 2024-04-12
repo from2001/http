@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -20,7 +20,7 @@ namespace STYLY.Http.Service.Unity
             return new UnityHttpRequest(UnityWebRequestTexture.GetTexture(uri));
         }
 
-        public IHttpRequest GetAudioClip(string uri)
+        public IHttpRequest GetAudioClip(string uri, AudioType audioType = AudioType.UNKNOWN)
         {
             return new UnityHttpRequest(UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.UNKNOWN));
         }
