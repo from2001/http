@@ -89,14 +89,20 @@ crashlytics-build.properties
 /[Aa]ssets/link.xml
 /[Aa]ssets/link.xml.meta
 
-#BurstAot
+# BurstAot
 /Build_BurstDebugInformation_DoNotShip/StaticLibraries/lib_burst_generated.txt
 /ProjectSettings/BurstAotSettings_Android.json
 /ProjectSettings/BurstAotSettings_iOS.json
 
+# Test Runner
+/[Aa]ssets/InitTestScene*.unity*
+
 # Others
 **/.DS_Store
 .idea
-/[Aa]ssets/InitTestScene*.unity*
+/_[Bb]uild/
+/[Aa]ssets/_temp/
+/[Aa]ssets/_temp.meta
+/_Output/*
 
 
