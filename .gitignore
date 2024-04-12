@@ -97,5 +97,6 @@ crashlytics-build.properties
 # Others
 **/.DS_Store
 .idea
+/[Aa]ssets/InitTestScene*.unity*
 
 
