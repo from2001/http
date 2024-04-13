@@ -103,6 +103,7 @@ namespace STYLY.Http.Service.Unity
             catch (Exception e)
             {
                 response.Error = e.Message;
+                InvokeError(unityHttpRequest, response, onError);
             }
             yield return ret;
 
@@ -111,19 +112,15 @@ namespace STYLY.Http.Service.Unity
                 response = CreateResponse(unityWebRequest);
                 if (!response.IsSuccessful)
                 {
-                    onError?.Invoke(response);
+                    InvokeError(unityHttpRequest, response, onError);
                 }
                 else if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
                 {
-                    // Delete cache downloading flag file
-                    CacheUtils.DeleteCacheDownloadingFlagFile(unityHttpRequest.URL, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
-                    onNetworkError?.Invoke(response);
+                    InvokeError(unityHttpRequest, response, onError);
                 }
                 else if (unityWebRequest.result == UnityWebRequest.Result.ProtocolError)
                 {
-                    // Delete cache downloading flag file
-                    CacheUtils.DeleteCacheDownloadingFlagFile(unityHttpRequest.URL, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
-                    onError?.Invoke(response);
+                    InvokeError(unityHttpRequest, response, onError);
                 }
                 else
                 {
@@ -136,8 +133,16 @@ namespace STYLY.Http.Service.Unity
             {
                 Debug.Log(e.Message);
                 response.Error = e.Message;
-                onError?.Invoke(response);
+                InvokeError(unityHttpRequest, response, onError);
             }
+        }
+
+        private void InvokeError(UnityHttpRequest unityHttpRequest, HttpResponse response, Action<HttpResponse> onError)
+        {
+            // Delete cache downloading flag file
+            CacheUtils.DeleteCacheDownloadingFlagFile(unityHttpRequest.URL, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
+            // Invoke error
+            onError?.Invoke(response);
         }
 
         public void Abort(IHttpRequest request)
