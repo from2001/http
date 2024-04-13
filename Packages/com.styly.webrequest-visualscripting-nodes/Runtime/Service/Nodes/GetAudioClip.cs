@@ -7,6 +7,7 @@ using STYLY.Http;
 using STYLY.Http.Service;
 using System.Threading.Tasks;
 using STYLY.Http.Service.Unity;
+using System;
 
 namespace WebrequestVisualScriptingNodes
 {
@@ -32,6 +33,10 @@ namespace WebrequestVisualScriptingNodes
         public ValueInput URL;
 
         [DoNotSerialize]
+        [PortLabelHidden]
+        public ValueInput AudioType { get; private set; }
+
+        [DoNotSerialize]
         public ValueOutput result;
 
         [DoNotSerialize]
@@ -47,7 +52,8 @@ namespace WebrequestVisualScriptingNodes
             outputTrigger_Error = ControlOutput("Error");
             outputTrigger_Progress = ControlOutput("Progress");
 
-            URL = ValueInput<string>("URL", "");
+            URL = ValueInput<string>("URL", String.Empty);
+            AudioType = ValueInput("AudioType", UnityEngine.AudioType.UNKNOWN);
             result = ValueOutput<AudioClip>("AudioClip", (flow) => resultValue);
             progress = ValueOutput<float>("Progress Value", (flow) => progressValue);
         }
@@ -55,8 +61,9 @@ namespace WebrequestVisualScriptingNodes
         private IEnumerator Enter(Flow flow)
         {
             string url = flow.GetValue<string>(URL);
+            AudioType audioType = flow.GetValue<AudioType>(AudioType);
             HttpResponse httpResponse = null;
-            UniTask.Create(async () => { httpResponse = await GetAudioClipTask(url); }).Forget();
+            UniTask.Create(async () => { httpResponse = await GetAudioClipTask(url, audioType); }).Forget();
 
             while (httpResponse == null)
             {
@@ -80,9 +87,9 @@ namespace WebrequestVisualScriptingNodes
             }
         }
 
-        private async UniTask<HttpResponse> GetAudioClipTask(string url)
+        private async UniTask<HttpResponse> GetAudioClipTask(string url, AudioType audioType)
         {
-            HttpResponse httpResponse = await Http.GetAudioClip(url)
+            HttpResponse httpResponse = await Http.GetAudioClip(url, audioType)
             .UseCache(CacheType.UseCacheAlways)
             .OnError(response => Debug.Log(response.StatusCode))
             .OnNetworkError(response => Debug.Log("NetWorkError"))

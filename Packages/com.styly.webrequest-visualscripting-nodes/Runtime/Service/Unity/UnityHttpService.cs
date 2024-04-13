@@ -20,9 +20,9 @@ namespace STYLY.Http.Service.Unity
             return new UnityHttpRequest(UnityWebRequestTexture.GetTexture(uri));
         }
 
-        public IHttpRequest GetAudioClip(string uri)
+        public IHttpRequest GetAudioClip(string uri, AudioType audioType = AudioType.UNKNOWN)
         {
-            return new UnityHttpRequest(UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.UNKNOWN));
+            return new UnityHttpRequest(UnityWebRequestMultimedia.GetAudioClip(uri, audioType));
         }
 
         public IHttpRequest Post(string uri, string postData)
@@ -94,31 +94,55 @@ namespace STYLY.Http.Service.Unity
             var unityHttpRequest = (UnityHttpRequest)request;
             var unityWebRequest = unityHttpRequest.UnityWebRequest;
 
-            yield return unityWebRequest.SendWebRequest();
-
-            var response = CreateResponse(unityWebRequest);
-
-            if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
+            HttpResponse response = new();
+            UnityWebRequestAsyncOperation ret = null;
+            try
             {
-                // Delete cache downloading flag file
-                CacheUtils.DeleteCacheDownloadingFlagFile(unityHttpRequest.URL, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
-
-                onNetworkError?.Invoke(response);
+                ret = unityWebRequest.SendWebRequest();
             }
-            else if (unityWebRequest.result == UnityWebRequest.Result.ProtocolError)
+            catch (Exception e)
             {
-                // Delete cache downloading flag file
-                CacheUtils.DeleteCacheDownloadingFlagFile(unityHttpRequest.URL, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
-
-                onError?.Invoke(response);
+                response.Error = e.Message;
+                InvokeError(unityHttpRequest, response, onError);
             }
-            else
+            yield return ret;
+
+            try
             {
-                // Create cache file
-                CacheUtils.CreateCacheFile(unityHttpRequest.URL, response.Bytes, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
-
-                onSuccess?.Invoke(response);
+                response = CreateResponse(unityWebRequest);
+                if (!response.IsSuccessful)
+                {
+                    InvokeError(unityHttpRequest, response, onError);
+                }
+                else if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
+                {
+                    InvokeError(unityHttpRequest, response, onError);
+                }
+                else if (unityWebRequest.result == UnityWebRequest.Result.ProtocolError)
+                {
+                    InvokeError(unityHttpRequest, response, onError);
+                }
+                else
+                {
+                    // Create cache file
+                    CacheUtils.CreateCacheFile(unityHttpRequest.URL, response.Bytes, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
+                    onSuccess?.Invoke(response);
+                }
             }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);
+                response.Error = e.Message;
+                InvokeError(unityHttpRequest, response, onError);
+            }
+        }
+
+        private void InvokeError(UnityHttpRequest unityHttpRequest, HttpResponse response, Action<HttpResponse> onError)
+        {
+            // Delete cache downloading flag file
+            CacheUtils.DeleteCacheDownloadingFlagFile(unityHttpRequest.URL, unityHttpRequest.ignorePatternsForCacheFilePathGeneration);
+            // Invoke error
+            onError?.Invoke(response);
         }
 
         public void Abort(IHttpRequest request)
@@ -132,22 +156,64 @@ namespace STYLY.Http.Service.Unity
 
         private static HttpResponse CreateResponse(UnityWebRequest unityWebRequest)
         {
-            return new HttpResponse
+            HttpResponse response = null;
+            try
             {
-                Url = unityWebRequest.url,
-                Bytes = unityWebRequest.downloadHandler?.data,
-                Text = (unityWebRequest.downloadHandler as DownloadHandlerAudioClip)?.audioClip ? null : unityWebRequest.downloadHandler?.text,
-                IsSuccessful = unityWebRequest.result != UnityWebRequest.Result.ProtocolError
-                            && unityWebRequest.result != UnityWebRequest.Result.ConnectionError,
-                IsHttpError = unityWebRequest.result == UnityWebRequest.Result.ProtocolError,
-                IsNetworkError = unityWebRequest.result == UnityWebRequest.Result.ConnectionError,
-                Error = unityWebRequest.error,
-                StatusCode = unityWebRequest.responseCode,
-                ResponseHeaders = unityWebRequest.GetResponseHeaders(),
-                Texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture)?.texture,
-                AudioClip = (unityWebRequest.downloadHandler as DownloadHandlerAudioClip)?.audioClip,
-            };
-        }
+                response = new HttpResponse
+                {
+                    Url = unityWebRequest.url,
+                    Bytes = unityWebRequest.downloadHandler?.data,
+                    Text = null,
+                    IsSuccessful = unityWebRequest.result != UnityWebRequest.Result.ProtocolError
+                                && unityWebRequest.result != UnityWebRequest.Result.ConnectionError,
+                    IsHttpError = unityWebRequest.result == UnityWebRequest.Result.ProtocolError,
+                    IsNetworkError = unityWebRequest.result == UnityWebRequest.Result.ConnectionError,
+                    Error = unityWebRequest.error,
+                    StatusCode = unityWebRequest.responseCode,
+                    ResponseHeaders = unityWebRequest.GetResponseHeaders(),
+                    Texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture)?.texture,
+                    AudioClip = (unityWebRequest.downloadHandler as DownloadHandlerAudioClip)?.audioClip,
+                };
 
+                if ((unityWebRequest.downloadHandler as DownloadHandlerAudioClip)?.GetType()
+                    == Type.GetType("UnityEngine.Networking.DownloadHandlerAudioClip, UnityEngine.UnityWebRequestAudioModule"))
+                {
+                    // AudioClip
+                    if (response.AudioClip == null || response.AudioClip.length == 0)
+                    {
+                        response.IsSuccessful = false;
+                        response.Error = "Failed to get AudioClip";
+                        Debug.Log("Failed to get AudioClip");
+                    }
+                }
+                else if ((unityWebRequest.downloadHandler as DownloadHandlerTexture)?.GetType()
+                    == Type.GetType("UnityEngine.Networking.DownloadHandlerTexture, UnityEngine.UnityWebRequestTextureModule"))
+                {
+                    // Texture
+                    if (response.Texture == null)
+                    {
+                        response.IsSuccessful = false;
+                        response.Error = "Failed to get Texture.";
+                        Debug.Log("Failed to get Texture.");
+                    }
+                }
+                else
+                {
+                    // Text
+                    response.Text = unityWebRequest.downloadHandler?.text;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);
+                response = new HttpResponse
+                {
+                    Url = unityWebRequest.url,
+                    IsSuccessful = false,
+                    Error = e.Message
+                };
+            }
+            return response;
+        }
     }
 }

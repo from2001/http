@@ -103,9 +103,9 @@ namespace STYLY.Http
         }
 
         /// <see cref="STYLY.Http.Service.IHttpService.GetAudioClip"/>
-        public static IHttpRequest GetAudioClip(string uri)
+        public static IHttpRequest GetAudioClip(string uri, AudioType audioType = AudioType.UNKNOWN)
         {
-            return Instance.service.GetAudioClip(uri);
+            return Instance.service.GetAudioClip(uri, audioType);
         }
 
         /// <see cref="STYLY.Http.Service.IHttpService.Post(string, string)"/>

@@ -9,6 +9,57 @@ The Http system has a quick and easy API for making http requests within Unity. 
 
 ![WebRequestVisualScriptingNodes](https://github.com/styly-dev/WebRequest_VisualScriptingNodes/assets/387880/4827b358-abaa-4726-ae82-b9ecffb63778)
 
+## Installation
+
+Prerequisites : [Node.js](https://nodejs.org/en/download/) v16 or above
+```
+# Install openupm-cli
+npm install -g openupm-cli
+
+# Go to your unity project directory
+cd YOUR_UNITY_PROJECT_DIR
+
+# Install package: com.styly.webrequest-visualscripting-nodes
+openupm add com.styly.webrequest-visualscripting-nodes
+```
+
+## How to use with Visual Scripting
+Find the WebRequest custom nodes in `WebRequest` category with the fuzzy finder.
+
+- Get Text node
+- Get Texture node
+- Get AudioClip node
+- POST node (To be implemented)
+- POST Texture node (To be implemented)
+
+### Get Text node
+<img width="1044" alt="Get Text" src="https://github.com/styly-dev/WebRequest_VisualScriptingNodes/assets/387880/46f8b6de-221a-4d0c-aa09-0d4070e3c39b">
+
+### Get Texture node
+<img width="1044" alt="Get Texture" src="https://github.com/styly-dev/WebRequest_VisualScriptingNodes/assets/387880/7cb0a49c-a44a-4977-a0cf-e29e35a7daf1">
+
+### Get AudioClip node
+<img width="1044" alt="Get Audio Clip" src="https://github.com/styly-dev/WebRequest_VisualScriptingNodes/assets/387880/dc4a933e-f7ea-469e-ad5a-04c18afe2c23">
+
+### Progress
+<img width="1044" alt="Progress" src="https://github.com/styly-dev/WebRequest_VisualScriptingNodes/assets/387880/797f0420-3ef7-49ad-9b6e-839812e891b7">
+
+### POST node
+To be implemented
+
+### POST Texture node
+To be implemented
+
+## Samples (Visual Scripting)
+
+How to install samples
+
+Click `Import` button at `Window` - `Package Manager` - `Packages in Project` - `WebRequest Visual Scripting` - `Samples`
+
+Sample Music: 
+
+* [penguinmusic - Modern Chillout (Future Calm)](https://pixabay.com/music/upbeat-penguinmusic-modern-chillout-future-calm-12641/)
+
 ## Features
 
 Original features
@@ -31,29 +82,6 @@ New features
 * Unity 2021.3
 * .NET 4.5
 * C# 7
-
-## Installation
-
-`openupm add com.styly.webrequest-visualscripting-nodes`
-
-## How to use with Visual Scripting
-Find the WebRequest custom nodes in `WebRequest` category with the fuzzy finder.
-
-- Get Text node
-- Get Texture node
-- Get AudioClip node
-- POST node (To be implemented)
-- POST Texture node (To be implemented)
-
-## Samples (Visual Scripting)
-
-How to install samples
-
-Click `Import` button at `Window` - `Package Manager` - `Packages in Project` - `WebRequest Visual Scripting` - `Samples`
-
-Sample Music: 
-
-* [penguinmusic - Modern Chillout (Future Calm)](https://pixabay.com/music/upbeat-penguinmusic-modern-chillout-future-calm-12641/)
 
 ## How to use Http with C# code
 
