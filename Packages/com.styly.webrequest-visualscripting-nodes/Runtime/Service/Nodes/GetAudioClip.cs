@@ -32,9 +32,6 @@ namespace WebrequestVisualScriptingNodes
         [DoNotSerialize]
         public ValueInput URL;
 
-        // [Inspectable, UnitHeaderInspectable, Serialize]
-        // public AudioType AudioType2{get; set;} = AudioType.UNKNOWN;
-
         [DoNotSerialize]
         [PortLabelHidden]
         public ValueInput AudioType { get; private set; }
