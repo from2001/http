@@ -12,6 +12,8 @@ public class TestFunctions : MonoBehaviour
     {
         if (((bool)isMethodSucceeded && shouldSucceed) || (!(bool)isMethodSucceeded && !shouldSucceed))
         {
+            Debug.Log("isMethodSucceeded: " + isMethodSucceeded);
+            Debug.Log("shouldSucceed: " + shouldSucceed);
             Debug.Log("StatusCode: " + ResultResponse.StatusCode);
             Debug.Log("Error Message: " + ResultResponse.Error);
             Debug.Log("Text: " + ResultResponse.Text);
@@ -19,9 +21,11 @@ public class TestFunctions : MonoBehaviour
         }
         else
         {
+            Debug.Log("isMethodSucceeded: " + isMethodSucceeded);
+            Debug.Log("shouldSucceed: " + shouldSucceed);
             Debug.Log("StatusCode: " + ResultResponse.StatusCode);
             Debug.Log("Error Message: " + ResultResponse.Error);
-            Debug.Log("Text" + ResultResponse.Text);
+            Debug.Log("Text: " + ResultResponse.Text);
             Assert.Fail("Failed");
         }
     }
