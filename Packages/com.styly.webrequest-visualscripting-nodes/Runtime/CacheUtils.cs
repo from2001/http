@@ -23,7 +23,9 @@ namespace STYLY.Http
 
             if (shouldUseCache || shouldUseCacheWhenOffline)
             {
-                return GenerateCacheFilePath(uri);
+                string CacheFilePath = GenerateCacheFilePath(uri);
+                Debug.Log("Using cache: " + CacheFilePath);
+                return CacheFilePath;
             }
             return uri;
         }
@@ -68,7 +70,9 @@ namespace STYLY.Http
             uri = RemoveIgnorePatternsFromUri(uri, ignorePatternsForCacheFilePathGeneration);
             if (IsNowDownloading(uri, ignorePatternsForCacheFilePathGeneration))
             {
-                System.IO.File.WriteAllBytes(GenerateCacheFilePath(uri), data);
+                string CacheFilePath = GenerateCacheFilePath(uri);
+                System.IO.File.WriteAllBytes(CacheFilePath, data);
+                Debug.Log("Cache file is created: " + CacheFilePath);
                 DeleteCacheDownloadingFlagFile(uri, ignorePatternsForCacheFilePathGeneration);
             }
         }
@@ -104,7 +108,7 @@ namespace STYLY.Http
         }
 
         /// <summary>
-        /// Generate cache file name from uri.
+        /// Generate cache file name (with extension) from uri.
         /// </summary>
         /// <param name="uri"></param>
         /// <returns></returns>
@@ -119,7 +123,13 @@ namespace STYLY.Http
             {
                 sb.Append(b.ToString("x2"));
             }
-            return sb.ToString();
+            string fileName = sb.ToString();
+            string extension = GetExtensionFromURL(uri);
+            if (extension != null)
+            {
+                fileName += "." + extension;
+            }
+            return fileName;
         }
 
         public static string[] GetSignedUrlIgnorePatters()
@@ -131,6 +141,36 @@ namespace STYLY.Http
             };
             return patterns;
         }
+
+        /// <summary>
+        /// Returns the extension of the URL or null if the extension cannot be determined.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static string GetExtensionFromURL(string url)
+        {
+            string extension = null;
+
+            // Remove query string
+            int queryIndex = url.IndexOf("?");
+            if (queryIndex != -1) { url = url[..queryIndex]; }
+
+            // Get the string after the last dot
+            int lastDotIndex = url.LastIndexOf(".");
+            if (lastDotIndex != -1) { extension = url[(lastDotIndex + 1)..]; }
+
+            // If the extension is too long, it is not an extension
+            if (extension.Length > 5) { return null; }
+
+            // If the extension contains a slash, it is not an extension
+            if (extension.Contains("/")) { return null; }
+
+            // If the extension is empty, it is not an extension
+            if (extension == "") { return null; }
+
+            return extension;
+        }
+
 
     }
 }
