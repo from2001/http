@@ -147,7 +147,7 @@ namespace STYLY.Http
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static string GetExtensionFromURL(string url)
+        private static string GetExtensionFromURL(string url)
         {
             string extension = null;
 
