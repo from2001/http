@@ -1,7 +1,7 @@
 {
   "name": "com.styly.webrequest-visualscripting-nodes",
   "displayName": "WebRequest Visual Scripting",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Unity Visual Scripting Node for WebRequest",
   "unity": "2021.3",
   "repository": {
